@@ -10,6 +10,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// 权限拦截
+import '@/permission'
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
