@@ -24,6 +24,9 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   response => {
+    // Message.success({
+    //   message: response.data.message
+    // })
     NProgress.done()
     return response
   },
