@@ -4,21 +4,13 @@
   </div>
 </template>
 
-<style lang="scss"></style>
-
-<script>
-import testApi from '@/api/test'
-export default {
-  created() {
-    // 初始化数据
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      testApi.getList().then(res => {
-        console.log('get', res.data)
-      })
-    }
-  }
+<style lang="scss">
+body {
+  font-family: 'Microsoft YaHei' !important;
 }
-</script>
+html,
+body,
+#app {
+  height: 100%;
+}
+</style>
