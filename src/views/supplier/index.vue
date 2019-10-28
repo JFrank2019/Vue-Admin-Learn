@@ -6,26 +6,28 @@
       <el-form-item prop="name">
         <el-input placeholder="供应商名称" v-model="searchMap.name"></el-input>
       </el-form-item>
-      <el-form-item prop="linkman">
+      <el-form-item prop="linkman" v-if="!isDialog">
         <el-input placeholder="联系人" v-model="searchMap.linkman"></el-input>
       </el-form-item>
-      <el-form-item prop="mobile">
+      <el-form-item prop="mobile" v-if="!isDialog">
         <el-input placeholder="联系电话" v-model="searchMap.mobile"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="fetchData" type="primary">查询</el-button>
-        <el-button @click="handleAdd" type="primary">新增</el-button>
-        <el-button @click="resetFrom('searchForm')">重置</el-button>
+        <el-button @click="handleAdd" type="primary" v-if="!isDialog">新增</el-button>
+        <el-button @click="resetFrom('searchForm')" v-if="!isDialog">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格区域 -->
-    <el-table :data="list" border height="600" stripe style="width: 100%">
+    <!-- highlight-current-row: 激活单选行 -->
+    <!-- 当点击某一行后，会触发@current-change这个事件，从而调用对应的函数handleCurrentChange,他会接收两个参数 :currentRow, oldCurrentRow -->
+    <el-table :data="list" :highlight-current-row="isDialog" @current-change="handleCurrentRowChange" border height="600" stripe style="width: 100%">
       <el-table-column align="center" label="序号" type="index" width="60"></el-table-column>
       <el-table-column align="center" label="供应商名称" prop="name"></el-table-column>
       <el-table-column align="center" label="联系人" prop="linkman" width="90"></el-table-column>
-      <el-table-column align="center" label="联系电话" prop="mobile"></el-table-column>
-      <el-table-column align="center" label="备注" prop="remark"></el-table-column>
-      <el-table-column align="center" label="操作" width="150">
+      <el-table-column align="center" label="联系电话" prop="mobile" v-if="!isDialog"></el-table-column>
+      <el-table-column align="center" label="备注" prop="remark" v-if="!isDialog"></el-table-column>
+      <el-table-column align="center" label="操作" v-if="!isDialog" width="150">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row.id)" size="mini">编辑</el-button>
           <el-button @click="handleDelete(scope.row.id)" size="mini" type="danger">删除</el-button>
@@ -36,12 +38,12 @@
     <!-- 分页组件 -->
     <el-pagination
       :current-page="currentPage"
+      :layout="!isDialog ? 'total, sizes, prev, pager, next, jumper' : 'prev, pager, next'"
       :page-size="pageSize"
       :page-sizes="[10, 20, 50]"
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-      layout="total, sizes, prev, pager, next, jumper"
       style="margin-top: 20px;"
     ></el-pagination>
 
@@ -73,6 +75,10 @@
 import supplierApi from '@/api/supplier'
 export default {
   name: 'supplier',
+  props: {
+    // 接收父组件传递过来的数据，通过isDialog来判断，是否为弹窗
+    isDialog: Boolean
+  },
   data() {
     return {
       list: [],
@@ -224,6 +230,11 @@ export default {
           return false
         }
       })
+    },
+    // 当点击某一行时的处理函数
+    handleCurrentRowChange(currentRow) {
+      // console.log('当前行', currentRow)
+      this.$emit('option-supplier', currentRow)
     }
   },
   created() {
