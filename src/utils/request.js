@@ -7,10 +7,10 @@ const loading = {
   // 打开加载
   open: function() {
     // 创建实例,而且会打开加载 窗口
-    console.log(this.loadingInstance, 'loadingInstance')
+    // console.log(this.loadingInstance, 'loadingInstance')
     if (this.loadingInstance === null) {
       // 如果实例 为空，则创建
-      console.log('创建加载实例。。。')
+      // console.log('创建加载实例。。。')
       this.loadingInstance = Loading.service({
         target: '.main',
         text: '拼命加载中...',

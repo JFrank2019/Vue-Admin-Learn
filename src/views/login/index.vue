@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { login, getUserInfo } from '@/api/login'
+// import { login, getUserInfo } from '@/api/login'
 export default {
   name: 'login',
   data() {
@@ -40,42 +40,56 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 提交表单给后台进行校验
-          login(this.form.username, this.form.password).then(res => {
-            // 抽取数据
-            const resp = res.data
-            console.log(resp.data, resp.data.token)
-            // 登录成功
-            if (resp.flag) {
-              // 验证成功，通过token去获取用户信息
-              getUserInfo(resp.data.token).then(res => {
-                const respUser = res.data
-                if (respUser.flag) {
-                  // 获取到了用户信息
-                  // 1. 保存token 用户信息
-                  localStorage.setItem('vue-admin-user', JSON.stringify(respUser.data))
-                  localStorage.setItem('vue-admin-token', resp.data.token)
-                  // 前往首页
-                  // 提示登录成功
-                  this.$message({
-                    message: resp.message,
-                    type: 'success'
-                  })
-                  // 导航到首页
-                  this.$router.push('/')
-                } else {
-                  // 没有获取到用户信息
-                  this.$message({
-                    message: respUser.message,
-                    type: 'error'
-                  })
-                }
-              })
-            } else {
-              // 登录失败
-              // 提示登录失败
-              this.$message.error(resp.message)
-            }
-          })
+          // login(this.form.username, this.form.password).then(res => {
+          //   // 抽取数据
+          //   const resp = res.data
+          //   console.log(resp.data, resp.data.token)
+          //   // 登录成功
+          //   if (resp.flag) {
+          //     // 验证成功，通过token去获取用户信息
+          //     getUserInfo(resp.data.token).then(res => {
+          //       const respUser = res.data
+          //       if (respUser.flag) {
+          //         // 获取到了用户信息
+          //         // 1. 保存token 用户信息
+          //         localStorage.setItem('vue-admin-user', JSON.stringify(respUser.data))
+          //         localStorage.setItem('vue-admin-token', resp.data.token)
+          //         // 前往首页
+          //         // 提示登录成功
+          //         this.$message({
+          //           message: resp.message,
+          //           type: 'success'
+          //         })
+          //         // 导航到首页
+          //         this.$router.push('/')
+          //       } else {
+          //         // 没有获取到用户信息
+          //         this.$message({
+          //           message: respUser.message,
+          //           type: 'error'
+          //         })
+          //       }
+          //     })
+          //   } else {
+          //     // 登录失败
+          //     // 提示登录失败
+          //     this.$message.error(resp.message)
+          //   }
+          // })
+          this.$store
+            .dispatch('Login', this.form)
+            .then(response => {
+              // response是响应回来的那个对象
+              if (response.flag) {
+                this.$router.push('/')
+              } else {
+                this.$message({
+                  message: response.message,
+                  type: 'warning'
+                })
+              }
+            })
+            .catch()
         } else {
           // 提示账号或密码错我
           this.$message({

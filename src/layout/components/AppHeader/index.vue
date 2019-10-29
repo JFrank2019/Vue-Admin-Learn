@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { logout } from '@/api/login'
+// import { logout } from '@/api/login'
 import passwordApi from '@/api/password'
 export default {
   name: 'AppHeader',
@@ -100,7 +100,7 @@ export default {
     },
     // 退出登录
     handleLogout() {
-      logout(localStorage.getItem('vue-admin-token')).then(res => {
+      /* logout(localStorage.getItem('vue-admin-token')).then(res => {
         const resp = res.data
         if (resp.flag) {
           // 退出成功
@@ -113,6 +113,18 @@ export default {
           // 提示
           this.$message({
             message: resp.message,
+            type: 'warning'
+          })
+        }
+      }) */
+      this.$store.dispatch('Logout').then(response => {
+        if (response.flag) {
+          // 退出成功, 回到登录页面
+          this.$router.push('/login')
+        } else {
+          // 提示
+          this.$message({
+            message: response.message,
             type: 'warning'
           })
         }
