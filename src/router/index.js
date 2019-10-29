@@ -57,17 +57,6 @@ const routes = [
         component: () => import('../views/goods')
       }
     ]
-  },
-  {
-    path: '/staff',
-    component: Layout,
-    children: [
-      {
-        path: '/',
-        meta: { title: '员工管理' },
-        component: () => import('../views/staff')
-      }
-    ]
   }
 ]
 

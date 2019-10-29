@@ -18,10 +18,6 @@
         <i class="el-icon-s-goods"></i>
         <span slot="title">商品管理</span>
       </el-menu-item>
-      <el-menu-item index="/staff/">
-        <i class="el-icon-user"></i>
-        <span slot="title">员工管理</span>
-      </el-menu-item>
     </el-menu>
   </div>
 </template>
